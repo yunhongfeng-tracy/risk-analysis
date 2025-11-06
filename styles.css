@@ -1,0 +1,609 @@
+:root {
+  color-scheme: light;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #111827;
+  background-color: #f9fafb;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f3f4f6;
+}
+
+.container {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+}
+
+.site-header {
+  background-color: #0b1f4d;
+  color: #f9fafb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 12px 30px rgba(11, 31, 77, 0.18);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.branding {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  opacity: 0.75;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.site-nav a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+.site-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #60a5fa, #34d399);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.site-nav a:hover {
+  color: #dbeafe;
+}
+
+.site-nav a:hover::after {
+  transform: scaleX(1);
+}
+
+.hero {
+  padding: 96px 0 72px;
+  background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent),
+    radial-gradient(circle at top right, rgba(52, 211, 153, 0.18), transparent),
+    linear-gradient(180deg, rgba(11, 31, 77, 0.92), rgba(11, 31, 77, 0.85));
+  color: #f9fafb;
+}
+
+.hero-content {
+  display: grid;
+  gap: 24px;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 720px;
+  opacity: 0.9;
+}
+
+.scenario-form {
+  display: grid;
+  gap: 12px;
+}
+
+.scenario-form label {
+  font-weight: 500;
+}
+
+.input-group {
+  display: grid;
+  gap: 16px;
+  background-color: rgba(15, 27, 56, 0.65);
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  resize: vertical;
+  min-height: 120px;
+  background-color: #0f1b38;
+  color: #f9fafb;
+  outline: none;
+}
+
+textarea::placeholder {
+  color: rgba(249, 250, 251, 0.6);
+}
+
+button[type='submit'],
+.view-details,
+.cta-button {
+  align-self: flex-start;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #60a5fa, #34d399);
+  color: #0b1f4d;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button[type='submit']:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.analysis-options {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background-color: rgba(11, 31, 77, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.analysis-mode {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.analysis-mode input[type="radio"] {
+  accent-color: #60a5fa;
+}
+
+.config-btn {
+  margin-left: auto;
+  padding: 6px 12px;
+  background: rgba(96, 165, 250, 0.2);
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  border-radius: 8px;
+  color: #f9fafb;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.config-btn:hover {
+  background: rgba(96, 165, 250, 0.3);
+}
+
+/* 模态框样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: #0f1b38;
+  border-radius: 16px;
+  width: min(480px, 90vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.modal-header h3 {
+  color: #f9fafb;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(156, 163, 175, 0.2);
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  border-radius: 8px;
+  background: #0b1224;
+  color: #f9fafb;
+  font: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.save-btn,
+.test-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #60a5fa, #34d399);
+  color: #0b1f4d;
+}
+
+.test-btn {
+  background: rgba(96, 165, 250, 0.2);
+  color: #f9fafb;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+}
+
+.save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(96, 165, 250, 0.3);
+}
+
+.test-btn:hover {
+  background: rgba(96, 165, 250, 0.3);
+}
+
+/* AI生成内容样式 */
+.ai-generated {
+  position: relative;
+}
+
+.ai-generated::before {
+  content: "🤖";
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+button[type='submit']:hover,
+.view-details:hover,
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(96, 165, 250, 0.25);
+}
+
+.section-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.scenario-gallery {
+  padding: 72px 0 64px;
+  background-color: #f9fafb;
+}
+
+.scenario-gallery h2 {
+  font-size: 2.1rem;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.scenario-gallery p {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 40px;
+  color: #4b5563;
+}
+
+.scenario-list {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.scenario-card {
+  background: linear-gradient(135deg, #fff, #f3f4f6);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scenario-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
+}
+
+.risk-panel {
+  padding: 80px 0;
+  background-color: #0b1224;
+  color: #e5e7eb;
+}
+
+.risk-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.panel-label {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: #60a5fa;
+}
+
+#current-scenario {
+  font-size: 2.2rem;
+  font-weight: 600;
+}
+
+.scenario-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.scenario-meta span {
+  padding: 4px 10px;
+  background-color: rgba(96, 165, 250, 0.2);
+  border-radius: 999px;
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  font-size: 0.85rem;
+}
+
+.risk-content {
+  display: grid;
+  gap: 32px;
+}
+
+.risk-summary,
+.risk-detail-list,
+.solution-list {
+  background: rgba(15, 27, 56, 0.85);
+  padding: 24px;
+  border-radius: 18px;
+  border: 1px solid rgba(96, 165, 250, 0.15);
+  box-shadow: 0 18px 38px rgba(8, 15, 32, 0.3);
+}
+
+.risk-tags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  list-style: none;
+}
+
+.risk-tags li {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(96, 165, 250, 0.18);
+  border: 1px solid rgba(96, 165, 250, 0.45);
+  font-weight: 500;
+}
+
+.risk-list,
+.solutions {
+  display: grid;
+  gap: 18px;
+}
+
+.risk-item,
+.solution-item {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 14px;
+  background-color: rgba(14, 24, 49, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.risk-item strong,
+.solution-item strong {
+  font-size: 1.05rem;
+}
+
+.risk-meter {
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: rgba(148, 163, 184, 0.18);
+}
+
+.risk-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.risk-level-low {
+  background: linear-gradient(90deg, #34d399, #10b981);
+}
+
+.risk-level-medium {
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+}
+
+.risk-level-high {
+  background: linear-gradient(90deg, #f43f5e, #ef4444);
+}
+
+.insurance-section {
+  padding: 72px 0;
+  background: linear-gradient(135deg, #0b1f4d, #1f2937);
+  color: #f9fafb;
+}
+
+.insurance-content {
+  display: grid;
+  gap: 28px;
+}
+
+.insurance-highlights {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.insurance-highlights article {
+  background: rgba(15, 27, 56, 0.9);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  box-shadow: 0 18px 38px rgba(11, 31, 77, 0.22);
+}
+
+.cta-section {
+  padding: 80px 0;
+  background-color: #f9fafb;
+}
+
+.cta-content {
+  display: grid;
+  gap: 18px;
+  text-align: center;
+}
+
+.cta-button {
+  justify-self: center;
+}
+
+.site-footer {
+  padding: 28px 0;
+  background: #0b1224;
+  color: #9ca3af;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+}
+
+.footer-links a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.placeholder {
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .header-content,
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .site-nav {
+    flex-wrap: wrap;
+  }
+
+  .risk-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  button[type='submit'],
+  .view-details,
+  .cta-button {
+    width: 100%;
+    text-align: center;
+  }
+}

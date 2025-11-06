@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RiskInsight 风险分析平台</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-content">
+        <div class="branding">
+          <span class="logo">RiskInsight</span>
+          <span class="tagline">一站式风险识别与缓释方案平台</span>
+        </div>
+        <nav class="site-nav">
+          <a href="#scenarios">场景库</a>
+          <a href="#risk-panel">风险详情</a>
+          <a href="#insurance">保险策略</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-content">
+          <h1>识别风险，守护业务与生活</h1>
+          <p>
+            基于真实客观场景，快速定位潜在风险并匹配针对性的解决方案，涵盖保险、供应链、金融、健康、能源等多类型场景。
+          </p>
+          <form class="scenario-form" id="scenario-form">
+            <label for="scenario-input">输入或粘贴场景描述：</label>
+            <div class="input-group">
+              <textarea
+                id="scenario-input"
+                name="scenario"
+                rows="4"
+                placeholder="例如：跨境电商出口到欧洲，涉及食品保鲜与冷链运输"
+              ></textarea>
+              <div class="analysis-options">
+                <label class="analysis-mode">
+                  <input type="radio" name="analysis-mode" value="template" checked>
+                  <span>模板匹配</span>
+                </label>
+                <label class="analysis-mode">
+                  <input type="radio" name="analysis-mode" value="ai">
+                  <span>AI深度分析</span>
+                </label>
+                <button type="button" id="api-config-btn" class="config-btn" title="配置API">⚙️</button>
+              </div>
+              <button type="submit">生成风险分析</button>
+            </div>
+          </form>
+          
+          <!-- API配置弹窗 -->
+          <div class="modal-overlay" id="api-modal" style="display: none;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>DeepSeek API 配置</h3>
+                <button type="button" class="close-btn" id="close-modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="api-key">API Key:</label>
+                  <input type="password" id="api-key" placeholder="请输入您的 DeepSeek API Key">
+                </div>
+                <div class="form-group">
+                  <label for="api-endpoint">API 端点:</label>
+                  <input type="url" id="api-endpoint" value="https://api.deepseek.com/v1/chat/completions" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="model-name">模型:</label>
+                  <select id="model-name">
+                    <option value="deepseek-chat">deepseek-chat</option>
+                    <option value="deepseek-coder">deepseek-coder</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="save-config" class="save-btn">保存配置</button>
+                <button type="button" id="test-connection" class="test-btn">测试连接</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scenario-gallery" id="scenarios">
+        <div class="container">
+          <h2>精选场景模板</h2>
+          <p>从常见业务或生活场景出发，快速浏览对应的风险画像与缓释方案。</p>
+          <div class="scenario-list" role="list">
+            <article class="scenario-card" data-scenario-id="medical_supply_chain">
+              <h3>医疗物资供应链</h3>
+              <p>上游原料采购、生产加工、仓储配送到医院采购的全链路风险评估。</p>
+              <button type="button" class="view-details">查看风险</button>
+            </article>
+            <article class="scenario-card" data-scenario-id="renewable_energy_farm">
+              <h3>新能源风电场运营</h3>
+              <p>涵盖设备故障、自然灾害、政策波动与现金流管理的综合风险。</p>
+              <button type="button" class="view-details">查看风险</button>
+            </article>
+            <article class="scenario-card" data-scenario-id="city_bike_sharing">
+              <h3>城市共享单车平台</h3>
+              <p>关注资产损耗、用户安全、数据隐私与运营合规等关键风险点。</p>
+              <button type="button" class="view-details">查看风险</button>
+            </article>
+            <article class="scenario-card" data-scenario-id="family_health_planning">
+              <h3>家庭健康保障规划</h3>
+              <p>结合重大疾病、意外伤害与长期照护的综合保险与资金安排。</p>
+              <button type="button" class="view-details">查看风险</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="risk-panel" id="risk-panel" aria-live="polite">
+        <div class="container">
+          <header class="risk-panel-header">
+            <div>
+              <p class="panel-label">当前场景</p>
+              <h2 id="current-scenario">请选择或输入场景</h2>
+            </div>
+            <div class="scenario-meta" id="scenario-meta"></div>
+          </header>
+
+          <div class="risk-content">
+            <section class="risk-summary">
+              <h3>风险分布概览</h3>
+              <ul class="risk-tags" id="risk-tags"></ul>
+            </section>
+
+            <section class="risk-detail-list">
+              <h3>风险详情与影响</h3>
+              <div id="risk-list" class="risk-list">
+                <p class="placeholder">请选择场景以查看具体风险。</p>
+              </div>
+            </section>
+
+            <section class="solution-list">
+              <h3>缓释措施与解决方案</h3>
+              <div id="solution-list" class="solutions">
+                <p class="placeholder">将根据选定场景生成针对性建议。</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="insurance-section" id="insurance">
+        <div class="container insurance-content">
+          <h2>保险策略与增值服务</h2>
+          <p>
+            RiskInsight 帮助您快速匹配保险产品与风险管理服务，从责任险到供应链险，再到个人及家庭保障。
+          </p>
+          <div class="insurance-highlights">
+            <article>
+              <h3>风险转移</h3>
+              <p>针对可保险风险，推荐责任险、货运险、健康险等组合方案。</p>
+            </article>
+            <article>
+              <h3>风险缓释</h3>
+              <p>通过风控咨询、监控系统与应急演练，降低风险发生概率。</p>
+            </article>
+            <article>
+              <h3>持续监测</h3>
+              <p>提供动态监控与预警服务，实时更新风险评分与应对措施。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section">
+        <div class="container cta-content">
+          <h2>开始构建您的风险视图</h2>
+          <p>联系我们获取企业版或个人顾问服务，让风险管理更有章法。</p>
+          <button type="button" class="cta-button">预约风险顾问</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>© 2025 RiskInsight. 保留所有权利。</p>
+        <div class="footer-links">
+          <a href="#">隐私政策</a>
+          <a href="#">使用条款</a>
+          <a href="#">帮助中心</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
