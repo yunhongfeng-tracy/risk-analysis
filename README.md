@@ -12,7 +12,7 @@
 
 ## 🚀 在线体验
 
-访问 GitHub Pages 部署地址：[https://your-username.github.io/risk-analysis](https://your-username.github.io/risk-analysis)
+访问 GitHub Pages 部署地址：[https://yunhongfeng-tracy.github.io/risk-analysis](https://yunhongfeng-tracy.github.io/risk-analysis)
 
 ## 📦 快速开始
 
@@ -20,7 +20,7 @@
 
 1. 克隆项目
 ```bash
-git clone https://github.com/your-username/risk-analysis.git
+git clone https://github.com/yunhongfeng-tracy/risk-analysis.git
 cd risk-analysis
 ```
 
